@@ -119,7 +119,11 @@ public class ChiffrementAES {
    * @throws Exception indique que l'encryptage a échoué
    */
   public static String encrypter(String exp) throws Exception {
-    return ChiffrementAES.encrypter(exp, "test1");
+    String cleSecreteBase64 = CleSecreteManager.getInstance().lire();
+    if (cleSecreteBase64 == null || cleSecreteBase64.isEmpty()) {
+      throw new IllegalStateException("Aucune clé secrète disponible (secret.key manquant ou vide)");
+    }
+    return ChiffrementAES.encrypter(exp, cleSecreteBase64);
   }
 
   /**
@@ -132,7 +136,11 @@ public class ChiffrementAES {
    * @throws Exception indique que le décryptage a échoué
    */
   public static String decrypter(String expBase64) throws Exception {
-    return ChiffrementAES.decrypter(expBase64, "test2");
+    String cleSecreteBase64 = CleSecreteManager.getInstance().lire();
+    if (cleSecreteBase64 == null || cleSecreteBase64.isEmpty()) {
+      throw new IllegalStateException("Aucune clé secrète disponible (secret.key manquant ou vide)");
+    }
+    return ChiffrementAES.decrypter(expBase64, cleSecreteBase64);
   }
 
 }
